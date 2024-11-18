@@ -1,0 +1,75 @@
+# lab 5.3
+class Calculator:
+    def __init__(self, *numbers):
+        """
+        Инициализация класса. Принимает произвольное количество чисел.
+        """
+        self.numbers = list(numbers)
+
+    def add(self, value):
+        """
+        Выполняет сложение value ко всем числам.
+        """
+        self.numbers = [x + value for x in self.numbers]
+
+    def subtract(self, value):
+        """
+        Выполняет вычитание value из всех чисел.
+        """
+        self.numbers = [x - value for x in self.numbers]
+
+    def multiply(self, value):
+        """
+        Выполняет умножение всех чисел на value.
+        """
+        self.numbers = [x * value for x in self.numbers]
+
+    def divide(self, value):
+        """
+        Выполняет деление всех чисел на value.
+        Если value равно 0, выводит сообщение об ошибке.
+        """
+        if value == 0:
+            raise ValueError("Деление на ноль невозможно.")
+        self.numbers = [x / value for x in self.numbers]
+
+    def round_numbers(self, digits):
+        """
+        Округляет числа до указанного количества знаков после запятой.
+        """
+        self.numbers = [round(x, digits) for x in self.numbers]
+
+    def reset(self, *new_numbers):
+        """
+        Сбрасывает список чисел и задает новый.
+        """
+        self.numbers = list(new_numbers)
+
+    def get_numbers(self):
+        """
+        Возвращает текущий список чисел.
+        """
+        return self.numbers
+
+
+# Пример использования
+calc = Calculator(10, 20, 30)  # Инициализируем числами
+
+print("Исходные числа:", calc.get_numbers())
+
+calc.add(5)  # Добавляем 5 ко всем числам
+print("После сложения:", calc.get_numbers())
+
+calc.subtract(3)  # Вычитаем 3 из всех чисел
+print("После вычитания:", calc.get_numbers())
+
+calc.multiply(2)  # Умножаем все числа на 2
+print("После умножения:", calc.get_numbers())
+
+calc.divide(4)  # Делим все числа на 4
+print("После деления:", calc.get_numbers())
+
+calc.round_numbers(1)  # Округляем до 1 знака после запятой
+print("После округления:", calc.get_numbers())
+
+calc.reset(100, 200, 300)  # Сбрасываем числа и задаем новые
