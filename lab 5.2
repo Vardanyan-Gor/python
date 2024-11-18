@@ -1,0 +1,75 @@
+# Базовый класс пользователя
+class User:
+    def __init__(self, username):
+        self.username = username
+        self.permissions = set()  # Множество для хранения прав пользователя
+    
+    def __str__(self):
+        return f"User: {self.username} with permissions: {', '.join(self.permissions)}"
+    
+    def add_permission(self, permission):
+        """Добавить право пользователю"""
+        self.permissions.add(permission)
+    
+    def remove_permission(self, permission):
+        """Удалить право у пользователя"""
+        self.permissions.discard(permission)
+    
+    def has_permission(self, permission):
+        """Проверить, есть ли у пользователя право"""
+        return permission in self.permissions
+
+# Класс обычного пользователя
+class RegularUser(User):
+    def __init__(self, username):
+        super().__init__(username)
+        self.add_permission("view_content")  # Обычные пользователи могут просматривать контент
+    
+    def edit_profile(self):
+        """Метод, доступный только обычному пользователю"""
+        if self.has_permission("edit_profile"):
+            return f"{self.username} is editing their profile."
+        else:
+            return f"{self.username} cannot edit the profile."
+
+
+# Класс администратора
+class Admin(User):
+    def __init__(self, username):
+        super().__init__(username)
+        self.add_permission("view_content")
+        self.add_permission("edit_content")
+        self.add_permission("manage_users")  # Администраторы могут управлять пользователями
+    
+    def manage_users(self):
+        """Метод, доступный только администратору"""
+        if self.has_permission("manage_users"):
+            return f"{self.username} is managing users."
+        else:
+            return f"{self.username} cannot manage users."
+    
+    def edit_content(self):
+        """Метод для редактирования контента"""
+        if self.has_permission("edit_content"):
+            return f"{self.username} is editing content."
+        else:
+            return f"{self.username} cannot edit content."
+
+
+# Пример использования:
+
+# Создаем разных пользователей
+admin = Admin("admin123")
+regular_user = RegularUser("user456")
+
+print(admin)  # Вывод: User: admin123 with permissions: view_content, edit_content, manage_users
+print(regular_user)  # Вывод: User: user456 with permissions: view_content
+
+# Проверяем действия админа
+print(admin.manage_users())  # Вывод: admin123 is managing users.
+print(admin.edit_content())  # Вывод: admin123 is editing content.
+
+# Проверяем действия обычного пользователя
+print(regular_user.edit_profile())  # Вывод: user456 cannot edit the profile.
+regular_user.add_permission("edit_profile")  # Добавляем право редактирования профиля
+print(regular_user.edit_profile())  # Вывод: user456 is editing their profile.
